@@ -1,0 +1,3 @@
+import"./modulepreload-polyfill-B5Qt9EMX.js";/* empty css               *//* empty css                  */import{f as o}from"./utils-CyVp4kcG.js";const a=document.getElementById("amount");a.addEventListener("input",m);function m(){const t=parseFloat(a.value)||0,n=Math.floor(t*.09),e=n*24;document.getElementById("principalAmount").textContent=o(t),document.getElementById("monthlyPayout").textContent=o(n),document.getElementById("totalReturns").textContent=o(e)}window.convertToUSD=function(){const t=parseFloat(a.value);if(!t||t<1e5){alert("Please enter a valid amount (minimum ₹1,00,000)");return}const e=(t/83).toFixed(2);alert(`₹${t.toLocaleString("en-IN")} = $${e} USD
+
+Please send approximately $${e} USDT to the address below.`)};m();

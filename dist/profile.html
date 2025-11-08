@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile & KYC - InvestPro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 24px rgba(99,102,241,0.12);
+      padding: 2.2rem 2rem 2rem 2rem;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .profile-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 1.08rem;
+      transition: background 0.2s;
+    }
+    .profile-info-row:last-child {
+      border-bottom: none;
+    }
+    .profile-label {
+      color: #6366F1;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .profile-value {
+      color: #1a202c;
+      font-weight: 600;
+      text-align: right;
+      letter-spacing: 0.1px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.45em 1.2em;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: 700;
+      background: #FEF3C7;
+      color: #92400E;
+      margin-left: 0.5rem;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      border: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .badge-success {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+    .badge-danger {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+    .badge-warning {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .document-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2.2rem;
+    }
+    .card-sm {
+      background: #F9FAFB;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.10);
+      padding: 2rem 1.5rem;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 0;
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .upload-area {
+      border: 2px dashed #6366F1;
+      border-radius: 14px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: #fff;
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+    }
+    .upload-area:hover {
+      border-color: #4F46E5;
+      background: #EEF2FF;
+    }
+    .upload-area i {
+      font-size: 2.5rem;
+      color: #6366F1;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .upload-area p {
+      margin: 0.5rem 0 1rem 0;
+      color: #6B7280;
+      font-size: 1rem;
+    }
+    .btn-secondary {
+      background: #fff;
+      color: #6366F1;
+      border: 2px solid #6366F1;
+      width: auto;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    }
+    .btn-secondary:hover {
+      background: #EEF2FF;
+      color: #4F46E5;
+      border-color: #4F46E5;
+    }
+    .upload-input {
+      display: none;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/profile-DM9aitE6.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="/assets/utils-CyVp4kcG.js">
+  <link rel="modulepreload" crossorigin href="/assets/supabase-Bx0BqbbJ.js">
+  <link rel="stylesheet" crossorigin href="/assets/global-CXfV4SO6.css">
+  <link rel="stylesheet" crossorigin href="/assets/dashboard-ZfclEh7V.css">
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo">InvestPro</a>
+        <div class="nav-links">
+          <a href="/dashboard.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link active">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="/" class="nav-link" onclick="return confirm('Are you sure you want to logout?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section">
+        <h1>Profile & KYC</h1>
+        <p class="text-muted">Manage your profile and complete KYC verification</p>
+      </div>
+
+      <div class="card">
+        <div class="flex-between" style="margin-bottom: 1.5rem;">
+          <h3 class="card-title" style="margin: 0;">KYC Status</h3>
+          <span class="badge badge-warning">Pending</span>
+        </div>
+
+        <div class="profile-info-row">
+          <span class="profile-label">Full Name</span>
+          <span class="profile-value">Roronoa Zoro</span>
+        </div>
+
+        <div class="profile-info-row">
+          <span class="profile-label">Mobile Number</span>
+          <span class="profile-value">+91 98765 43210</span>
+        </div>
+
+        <div class="profile-info-row">
+          <span class="profile-label">Email</span>
+          <span class="profile-value">zoro@example.com</span>
+        </div>
+
+        <div class="profile-info-row">
+          <span class="profile-label">Alternative Mobile</span>
+          <span class="profile-value">+91 98765 43211</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Document Upload</h3>
+        <p class="text-muted mb-3">Please upload clear photos or scans of your identity documents</p>
+
+        <div class="document-grid">
+          <div class="card card-sm">
+            <h4 style="margin-bottom: 1rem; font-size: 1.125rem;">Aadhaar Card</h4>
+            <label for="aadhaarUpload" class="upload-area">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload or drag and drop</p>
+              <button type="button" class="btn btn-secondary">Choose File</button>
+            </label>
+            <input type="file" id="aadhaarUpload" class="upload-input" accept="image/*,.pdf">
+          </div>
+
+          <div class="card card-sm">
+            <h4 style="margin-bottom: 1rem; font-size: 1.125rem;">PAN Card</h4>
+            <label for="panUpload" class="upload-area">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload or drag and drop</p>
+              <button type="button" class="btn btn-secondary">Choose File</button>
+            </label>
+            <input type="file" id="panUpload" class="upload-input" accept="image/*,.pdf">
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg" style="margin-top: 2rem;">
+          <i class="fas fa-check-circle"></i>
+          Submit KYC Documents
+        </button>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

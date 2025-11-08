@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referral Program - InvestPro</title>
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Page-specific styles */
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .stat-card {
+      background: linear-gradient(120deg,#fff 60%,#eef2ff 100%);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid #e5e7eb;
+      transition: box-shadow 0.2s, transform 0.2s;
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .stat-card:hover {
+      box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+      transform: translateY(-4px) scale(1.03);
+    }
+    .stat-label {
+      color: #6B7280;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #6366F1;
+      margin-bottom: 0.25rem;
+    }
+    
+    .referral-link-box {
+      background: #F9FAFB;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      border: 2px dashed #6366F1;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    }
+    .referral-link-text {
+      flex: 1;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      color: #1a202c;
+      word-break: break-all;
+    }
+    
+    .empty-referrals {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: #6B7280;
+    }
+    .empty-referrals i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    /* Page-specific responsive overrides */
+    @media (max-width: 900px) {
+      .grid-3 { grid-template-columns: repeat(1, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .stat-value { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo desktop-logo">InvestPro</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <a href="/dashboard.html" class="nav-logo mobile-logo">InvestPro</a>
+          <a href="/dashboard.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link active">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="#" class="nav-link" onclick="return handleLogout(event)">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section" style="margin-bottom: 2.5rem;">
+        <h1>Referral Program</h1>
+        <p class="text-muted">Earn rewards by inviting your friends and family</p>
+      </div>
+
+      <div class="grid grid-3 mb-4" style="margin-bottom: 2.5rem;">
+        <div class="stat-card">
+          <div class="stat-label">Total Referrals</div>
+          <div class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Instant Rewards</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Monthly Rewards</div>
+          <div class="stat-value">₹0</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <h3 class="card-title">Your Referral Link</h3>
+        <p class="text-muted">Share this link with your friends to earn rewards when they sign up and invest</p>
+        <div class="referral-link-box">
+          <span class="referral-link-text" id="referralLink">https://investpro.com/ref/USER123XYZ</span>
+          <button class="copy-btn" onclick="copyToClipboard('referralLink')" title="Copy link">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <h3 class="card-title">Your Referrals</h3>
+        <div class="empty-referrals">
+          <i class="fas fa-user-friends"></i>
+          <p>No referrals yet. Share your link to start earning!</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/referral.js"></script>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = menuToggle.querySelector('i');
+    
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      if (navLinks.classList.contains('open')) {
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-times');
+        menuToggle.setAttribute('aria-label', 'Close menu');
+      } else {
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+        menuToggle.setAttribute('aria-label', 'Toggle menu');
+      }
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+          navLinks.classList.remove('open');
+          menuIcon.classList.remove('fa-times');
+          menuIcon.classList.add('fa-bars');
+          menuToggle.setAttribute('aria-label', 'Toggle menu');
+        }
+      }
+    });
+    
+    // Close menu when clicking any nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          menuIcon.classList.remove('fa-times');
+          menuIcon.classList.add('fa-bars');
+          menuToggle.setAttribute('aria-label', 'Toggle menu');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

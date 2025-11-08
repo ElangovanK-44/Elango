@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - InvestPro</title>
+  <style>
+  /* --- base styles (from style.css) --- */
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  a { font-weight: 500; color: #646cff; text-decoration: inherit; }
+  a:hover { color: #535bf2; }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: linear-gradient(120deg, #eef2ff 0%, #f8fafc 100%);
+    color: #111827;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  }
+  h1 { font-size: 3.2em; line-height: 1.1; }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.10);
+    padding: 2rem 1.5rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+  }
+  button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    text-decoration: none;
+  }
+  button:hover { border-color: #646cff; }
+  .text-muted { color: #6B7280; }
+  .container-wide {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid-4 { grid-template-columns: 1fr; }
+  }
+  .stat-card {
+    background: linear-gradient(120deg,#fff 60%,#eef2ff 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+  }
+  .stat-card:hover {
+    box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+    transform: translateY(-4px) scale(1.03);
+  }
+  .stat-label {
+    color: #6B7280;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #6366F1;
+    margin-bottom: 0.25rem;
+  }
+  .alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: #FEF3C7;
+    border: 1px solid #FDE68A;
+    color: #92400E;
+    padding: 1.25rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+  }
+  .alert i {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+    color: #F59E42;
+  }
+  .dashboard-nav {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #6366F1;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    color: #6B7280;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .nav-link:hover {
+    background: #EEF2FF;
+    color: #6366F1;
+  }
+  .nav-link.active {
+    background: linear-gradient(135deg,#6366F1,#4F46E5);
+    color: #fff;
+  }
+  .nav-link i {
+    font-size: 1.125rem;
+  }
+  .dashboard-main {
+    padding: 2.5rem 0 2rem 0;
+    min-height: calc(100vh - 80px);
+  }
+  .welcome-section {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  .welcome-section h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.25rem;
+    font-weight: 900;
+    color: #6366F1;
+    letter-spacing: 0.5px;
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 768px) {
+    .nav-content { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .nav-links { flex-direction: column; gap: 0.25rem; }
+    .nav-link { justify-content: flex-start; }
+    .welcome-section h1 { font-size: 1.5rem; }
+    .stat-value { font-size: 1.3rem; }
+    .card-title { font-size: 1.05rem; }
+  }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" crossorigin src="/assets/dashboard-Bca2M_zb.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo">InvestPro</a>
+        <div class="nav-links">
+          <a href="/dashboard.html" class="nav-link active">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="/" class="nav-link" onclick="return confirm('Are you sure you want to logout?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section" style="margin-bottom: 2.5rem;">
+        <h1>Welcome, <span id="userName">zoro</span></h1>
+        <p class="text-muted">Manage your investments and track your earnings</p>
+      </div>
+
+      <div class="grid grid-4 mb-8" style="margin-bottom: 2.5rem;">
+        <div class="stat-card">
+          <div class="stat-label">Total Invested</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Monthly Payout</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Earned</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Referral Earnings</div>
+          <div class="stat-value">₹0</div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning mt-4" style="margin-bottom: 2.5rem;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+          <strong>Complete your KYC verification to start investing</strong>
+          <p style="margin: 0.5rem 0 0 0;">Please upload your documents to verify your identity and unlock all features.</p>
+          <a href="/profile.html" class="btn btn-primary" style="margin-top: 0.75rem;">Complete KYC</a>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <h3 class="card-title">Your Investments</h3>
+        <div class="empty-state">
+          <i class="fas fa-chart-line" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+          <p class="text-muted">You don't have any investments yet</p>
+          <a href="/deposit.html" class="btn btn-primary" style="margin-top: 1rem;">Start Investing</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

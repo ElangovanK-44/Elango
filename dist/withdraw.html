@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Withdrawal - InvestPro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #eef2ff 0%, #f8fafc 100%);
+      color: #111827;
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    }
+    .dashboard-nav {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #6366F1;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      color: #6B7280;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .nav-link:hover {
+      background: #EEF2FF;
+      color: #6366F1;
+    }
+    .nav-link.active {
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+    }
+    .nav-link i {
+      font-size: 1.125rem;
+    }
+    .dashboard-main {
+      padding: 2.5rem 0 2rem 0;
+      min-height: calc(100vh - 80px);
+    }
+    .container-wide {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .welcome-section {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .welcome-section h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.25rem;
+      font-weight: 900;
+      color: #6366F1;
+      letter-spacing: 0.5px;
+    }
+    .text-muted {
+      color: #6B7280;
+      font-size: 1.1rem;
+    }
+    .withdraw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 968px) {
+      .withdraw-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.10);
+      padding: 2rem 1.5rem;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6366F1;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .input-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6366F1;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.2px;
+    }
+    .input-field {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 1.05rem;
+      background: #f8fafc;
+      color: #1a202c;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.04);
+    }
+    .input-field:focus {
+      border-color: #6366F1;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.10);
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.85rem 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      margin-top: 0.5rem;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg,#4F46E5,#6366F1);
+      box-shadow: 0 4px 16px rgba(99,102,241,0.15);
+    }
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border-left: 4px solid;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .info-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .info-card p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    .info-card.warning {
+      background: #FEF3C7;
+      border-color: #FDE68A;
+      color: #92400E;
+    }
+    .info-card.info {
+      background: #DBEAFE;
+      border-color: #60A5FA;
+      color: #1E40AF;
+    }
+    .info-card.danger {
+      background: #FEE2E2;
+      border-color: #FCA5A5;
+      color: #9F1239;
+    }
+    .empty-history {
+      text-align: center;
+      padding: 2rem;
+      color: #6B7280;
+    }
+    .empty-history i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .nav-content { flex-direction: column; align-items: stretch; gap: 1rem; }
+      .nav-links { flex-direction: column; gap: 0.25rem; }
+      .nav-link { justify-content: flex-start; }
+      .welcome-section h1 { font-size: 1.5rem; }
+      .card-title { font-size: 1.05rem; }
+      .btn { font-size: 1rem; }
+      .withdraw-grid { gap: 1rem; }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/withdraw-DDtC7YBT.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="/assets/utils-CyVp4kcG.js">
+  <link rel="stylesheet" crossorigin href="/assets/global-CXfV4SO6.css">
+  <link rel="stylesheet" crossorigin href="/assets/dashboard-ZfclEh7V.css">
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo">InvestPro</a>
+        <div class="nav-links">
+          <a href="/dashboard.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link active">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="/" class="nav-link" onclick="return confirm('Are you sure you want to logout?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section">
+        <h1>Request Withdrawal</h1>
+        <p class="text-muted">Withdraw your earnings securely</p>
+      </div>
+
+      <div class="withdraw-grid">
+        <div>
+          <div class="card">
+            <h3 class="card-title">New Withdrawal Request</h3>
+            <form id="withdrawForm">
+              <div class="input-group">
+                <label class="input-label" for="amount">Amount (INR)</label>
+                <input
+                  type="number"
+                  id="amount"
+                  name="amount"
+                  class="input-field"
+                  placeholder="Enter withdrawal amount"
+                  min="1000"
+                  step="100"
+                  required
+                >
+              </div>
+
+
+              <div class="input-group">
+                <label class="input-label" for="cryptoAddress">Crypto Address (Optional)</label>
+                <input
+                  type="text"
+                  id="cryptoAddress"
+                  name="cryptoAddress"
+                  class="input-field"
+                  placeholder="Enter USDT (TRC20) address"
+                >
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-paper-plane"></i>
+                Submit Request
+              </button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Withdrawal History</h3>
+            <div class="empty-history">
+              <i class="fas fa-receipt"></i>
+              <p>No withdrawal requests yet</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="info-card warning">
+            <h4>
+              <i class="fas fa-clock"></i>
+              Processing Time
+            </h4>
+            <p>Withdrawals are typically processed within 24-48 hours on business days.</p>
+          </div>
+
+          <div class="info-card info" style="margin-top: 1.5rem;">
+            <h4>
+              <i class="fas fa-wallet"></i>
+              Minimum Amount
+            </h4>
+            <p>The minimum withdrawal amount is ₹1,000. Please ensure you meet this requirement.</p>
+          </div>
+
+          <div class="info-card danger" style="margin-top: 1.5rem;">
+            <h4>
+              <i class="fas fa-exclamation-triangle"></i>
+              Early Withdrawal
+            </h4>
+            <p>Withdrawing your principal before the plan completion may result in fees. Monthly payouts are not subject to early withdrawal fees.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

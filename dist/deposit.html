@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make a Deposit - InvestPro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #eef2ff 0%, #f8fafc 100%);
+      color: #111827;
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    }
+    .dashboard-nav {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #6366F1;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      color: #6B7280;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .nav-link:hover {
+      background: #EEF2FF;
+      color: #6366F1;
+    }
+    .nav-link.active {
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+    }
+    .nav-link i {
+      font-size: 1.125rem;
+    }
+    .dashboard-main {
+      padding: 2.5rem 0 2rem 0;
+      min-height: calc(100vh - 80px);
+    }
+    .container-wide {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .welcome-section {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .welcome-section h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.25rem;
+      font-weight: 900;
+      color: #6366F1;
+      letter-spacing: 0.5px;
+    }
+    .text-muted {
+      color: #6B7280;
+      font-size: 1.1rem;
+    }
+    .deposit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 968px) {
+      .deposit-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.10);
+      padding: 2rem 1.5rem;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6366F1;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .input-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6366F1;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.2px;
+    }
+    .input-field {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 1.05rem;
+      background: #f8fafc;
+      color: #1a202c;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.04);
+    }
+    .input-field:focus {
+      border-color: #6366F1;
+      box-shadow: 0 2px 12px rgba(99,102,241,0.10);
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.85rem 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+      margin-top: 0.5rem;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-secondary {
+      background: #fff;
+      color: #6366F1;
+      border: 2px solid #6366F1;
+    }
+    .btn-secondary:hover {
+      background: #eef2ff;
+      color: #4F46E5;
+      border-color: #4F46E5;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#6366F1,#4F46E5);
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg,#4F46E5,#6366F1);
+      box-shadow: 0 4px 16px rgba(99,102,241,0.15);
+    }
+    .wallet-address {
+      background: #F9FAFB;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #e5e7eb;
+    }
+    .wallet-text {
+      flex: 1;
+      font-size: 1rem;
+      color: #1a202c;
+    }
+    .copy-btn {
+      background: #EEF2FF;
+      color: #6366F1;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .copy-btn:hover {
+      background: #6366F1;
+      color: #fff;
+    }
+    .qr-placeholder {
+      width: 200px;
+      height: 200px;
+      background: #EEF2FF;
+      border: 2px dashed #6366F1;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: #6366F1;
+      font-size: 3rem;
+      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .summary-row:last-child {
+      border-bottom: none;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+      border-top: 2px solid #6366F1;
+      font-weight: 600;
+    }
+    .summary-label {
+      color: #6B7280;
+    }
+    .summary-value {
+      color: #6366F1;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .instructions-box {
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+    }
+    .instructions-box h4 {
+      color: #92400E;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .instructions-box ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: #92400E;
+      font-size: 0.95rem;
+    }
+    .instructions-box li {
+      margin-bottom: 0.5rem;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .nav-content { flex-direction: column; align-items: stretch; gap: 1rem; }
+      .nav-links { flex-direction: column; gap: 0.25rem; }
+      .nav-link { justify-content: flex-start; }
+      .welcome-section h1 { font-size: 1.5rem; }
+      .card-title { font-size: 1.05rem; }
+      .btn { font-size: 1rem; }
+      .deposit-grid { gap: 1rem; }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/deposit-C60CzpwJ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="/assets/utils-CyVp4kcG.js">
+  <link rel="stylesheet" crossorigin href="/assets/global-CXfV4SO6.css">
+  <link rel="stylesheet" crossorigin href="/assets/dashboard-ZfclEh7V.css">
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo">InvestPro</a>
+        <div class="nav-links">
+          <a href="/dashboard.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link active">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="/" class="nav-link" onclick="return confirm('Are you sure you want to logout?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section">
+        <h1>Make a Deposit</h1>
+        <p class="text-muted">Start your investment journey with InvestPro</p>
+      </div>
+
+      <div class="deposit-grid">
+        <div>
+          <div class="card">
+            <h3 class="card-title">Deposit Amount</h3>
+            <form id="depositForm">
+              <div class="input-group">
+                <label class="input-label" for="amount">Amount (INR)</label>
+                <input
+                  type="number"
+                  id="amount"
+                  name="amount"
+                  class="input-field"
+                  placeholder="Enter amount in INR"
+                  min="100000"
+                  step="1000"
+                  required
+                >
+              </div>
+              <button type="button" class="btn btn-secondary btn-full" onclick="convertToUSD()">
+                <i class="fas fa-exchange-alt"></i>
+                Convert to USD
+              </button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Investment Summary</h3>
+            <div class="summary-row">
+              <span class="summary-label">Principal Amount</span>
+              <span class="summary-value" id="principalAmount">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Plan Duration</span>
+              <span class="summary-value">24 Months</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Monthly Payout</span>
+              <span class="summary-value" id="monthlyPayout">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Total Returns</span>
+              <span class="summary-value" id="totalReturns">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3 class="card-title">USDT (TRC20) Address</h3>
+            <div class="qr-placeholder">
+              <img src="https://res.cloudinary.com/dwpzkfzuv/image/upload/v1760591714/USDT_chyujg.jpg" alt="USDT TRC20 QR Code" style="width: 120px; height: 120px;">
+            </div>
+
+            <div class="wallet-address">
+              <span class="wallet-text" id="walletAddress">TVdwfB6EPmH4KL7bcXiqFYbsaq1hbRvSum</span>
+              <button class="copy-btn" onclick="copyToClipboard('walletAddress')" title="Copy address">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+
+            <div class="instructions-box">
+              <h4>
+                <i class="fas fa-info-circle"></i>
+                Important Instructions
+              </h4>
+              <ul>
+                <li>Send only USDT via TRC20 network to this address</li>
+                <li>Minimum deposit: ₹1,00,000 (approximately $1,200 USDT)</li>
+                <li>Deposits will be confirmed within 10-30 minutes</li>
+                <li>Do not send any other cryptocurrency to this address</li>
+                <li>Save your transaction ID for reference</li>
+              </ul>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-full btn-lg" style="margin-top: 1.5rem;">
+            <i class="fas fa-check-circle"></i>
+            I Have Completed the Deposit
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

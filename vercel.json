@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    { "source": "/signin", "destination": "/signin.html" },
+    { "source": "/signup", "destination": "/signup.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/deposit", "destination": "/deposit.html" },
+    { "source": "/withdraw", "destination": "/withdraw.html" },
+    { "source": "/referral", "destination": "/referral.html" },
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/", "destination": "/index.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

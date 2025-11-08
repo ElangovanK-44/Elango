@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - InvestPro</title>
+  <style>
+  /* --- base styles (from style.css) --- */
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  a { font-weight: 500; color: #646cff; text-decoration: inherit; }
+  a:hover { color: #535bf2; }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: linear-gradient(120deg, #eef2ff 0%, #f8fafc 100%);
+    color: #111827;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  }
+  h1 { font-size: 3.2em; line-height: 1.1; }
+  .card {
+    background: linear-gradient(120deg, #fff 60%, #f8fafc 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(99,102,241,0.12);
+    padding: 2.5rem 2rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(99,102,241,0.18);
+  }
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #6366F1;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .btn, button {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+    text-decoration: none;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff;
+  }
+  .btn:hover, button:hover { 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99,102,241,0.25);
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #6B7280;
+  }
+  .empty-state i {
+    font-size: 4rem;
+    color: #C7D2FE;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  .text-muted { color: #6B7280; }
+  .container-wide {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .grid-4 { grid-template-columns: 1fr; }
+  }
+  .stat-card {
+    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.12);
+    padding: 2.2rem 1.5rem;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.1s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .stat-card:hover::before {
+    transform: scaleX(1);
+  }
+  .stat-card:hover {
+    box-shadow: 0 12px 40px rgba(99,102,241,0.20);
+    transform: translateY(-8px) scale(1.02);
+    border-color: #6366F1;
+  }
+  .stat-label {
+    color: #6B7280;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #6366F1;
+    margin-bottom: 0;
+    letter-spacing: -0.5px;
+  }
+  .alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border: 2px solid #FCD34D;
+    color: #92400E;
+    padding: 1.5rem 1.25rem;
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 16px rgba(251,191,36,0.15);
+    animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) 0.2s both;
+  }
+  .alert i {
+    font-size: 2.5rem;
+    margin-right: 0;
+    color: #F59E0B;
+    animation: pulse 2s infinite;
+  }
+  .alert strong {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .dashboard-nav {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+  }
+  .nav-logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #6366F1;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    color: #6B7280;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .nav-link:hover {
+    background: #EEF2FF;
+    color: #6366F1;
+  }
+  .nav-link.active {
+    background: linear-gradient(135deg,#6366F1,#4F46E5);
+    color: #fff;
+  }
+  .nav-link i {
+    font-size: 1.125rem;
+  }
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #6366F1;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .nav-logo.mobile-logo {
+    display: none;
+  }
+  .dashboard-main {
+    padding: 2.5rem 0 2rem 0;
+    min-height: calc(100vh - 80px);
+  }
+  .welcome-section {
+    margin-bottom: 3rem;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #EEF2FF 0%, #fff 100%);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
+  }
+  .welcome-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+  }
+  .welcome-section p {
+    font-size: 1.15rem;
+    color: #6B7280;
+    margin: 0;
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 768px) {
+    .container-wide { padding: 0 1rem; }
+    .menu-toggle {
+      display: block;
+    }
+    .nav-content {
+      flex-wrap: nowrap;
+    }
+    .nav-logo.desktop-logo {
+      display: none;
+    }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0;
+      z-index: 100;
+    }
+    .nav-links.open {
+      display: flex;
+    }
+    .nav-logo.mobile-logo {
+      display: block;
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 2px solid #6366F1;
+      margin-bottom: 0;
+    }
+    .nav-link { 
+      justify-content: flex-start; 
+      font-size: 1rem; 
+      padding: 0.85rem 1.5rem;
+      border-radius: 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .nav-link:last-child {
+      border-bottom: none;
+    }
+    .welcome-section { 
+      padding: 1.5rem 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .welcome-section h1 { font-size: 1.5rem; }
+    .welcome-section p { font-size: 1rem; }
+    .stat-value { font-size: 1.5rem; }
+    .stat-label { font-size: 0.95rem; }
+    .card-title { font-size: 1.2rem; }
+    .card { padding: 1.5rem 1rem; }
+    .alert { flex-direction: column; font-size: 0.95rem; padding: 1rem 0.5rem; gap: 1rem; }
+    .stat-card { padding: 1.5rem 1rem; font-size: 0.95rem; }
+    .btn, a.btn { font-size: 1rem; padding: 0.7rem 1.5rem; }
+    .grid-4 { gap: 1.5rem; }
+    .empty-state { padding: 2rem 1rem; }
+    .empty-state i { font-size: 3rem; }
+  }
+  @media (max-width: 480px) {
+    .container-wide { padding: 0 0.75rem; }
+    .card, .stat-card, .alert { border-radius: 10px; }
+    .nav-logo { font-size: 1.2rem; }
+    .nav-link { font-size: 0.95rem; }
+    .welcome-section h1 { font-size: 1rem; }
+    .btn, a.btn { font-size: 0.95rem; padding: 0.4rem 0.7rem; }
+  }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <nav class="dashboard-nav">
+    <div class="container-wide">
+      <div class="nav-content">
+        <a href="/dashboard.html" class="nav-logo desktop-logo">InvestPro</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <a href="/dashboard.html" class="nav-logo mobile-logo">InvestPro</a>
+          <a href="/dashboard.html" class="nav-link active">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/deposit.html" class="nav-link">
+            <i class="fas fa-wallet"></i>
+            <span>Deposit</span>
+          </a>
+          <a href="/withdraw.html" class="nav-link">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Withdraw</span>
+          </a>
+          <a href="/referral.html" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Referral</span>
+          </a>
+          <a href="/profile.html" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+          <a href="#" class="nav-link" onclick="return handleLogout(event)">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="container-wide">
+      <div class="welcome-section" style="margin-bottom: 2.5rem;">
+        <h1>Welcome, <span id="userName">zoro</span></h1>
+        <p class="text-muted">Manage your investments and track your earnings</p>
+      </div>
+
+      <div class="grid grid-4 mb-8" style="margin-bottom: 2.5rem;">
+        <div class="stat-card">
+          <div class="stat-label">Total Invested</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Monthly Payout</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Earned</div>
+          <div class="stat-value">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Referral Earnings</div>
+          <div class="stat-value">₹0</div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning mt-4" style="margin-bottom: 2.5rem;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+          <strong>Complete your KYC verification to start investing</strong>
+          <p style="margin: 0.5rem 0 0 0;">Please upload your documents to verify your identity and unlock all features.</p>
+          <a href="/profile.html" class="btn btn-primary" style="margin-top: 0.75rem;">Complete KYC</a>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <h3 class="card-title">Your Investments</h3>
+        <div class="empty-state">
+          <i class="fas fa-chart-line" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+          <p class="text-muted">You don't have any investments yet</p>
+          <a href="/deposit.html" class="btn btn-primary" style="margin-top: 1rem;">Start Investing</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/dashboard.js"></script>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const menuIcon = menuToggle.querySelector('i');
+    
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      if (navLinks.classList.contains('open')) {
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-times');
+        menuToggle.setAttribute('aria-label', 'Close menu');
+      } else {
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars');
+        menuToggle.setAttribute('aria-label', 'Toggle menu');
+      }
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+          navLinks.classList.remove('open');
+          menuIcon.classList.remove('fa-times');
+          menuIcon.classList.add('fa-bars');
+          menuToggle.setAttribute('aria-label', 'Toggle menu');
+        }
+      }
+    });
+    
+    // Close menu when clicking any nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          menuIcon.classList.remove('fa-times');
+          menuIcon.classList.add('fa-bars');
+          menuToggle.setAttribute('aria-label', 'Toggle menu');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
